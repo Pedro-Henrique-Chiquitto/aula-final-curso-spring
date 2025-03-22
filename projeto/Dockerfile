@@ -5,8 +5,9 @@ FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
 
 # Copiar os arquivos do projeto
-COPY ./pom.xml /app/
-COPY ./src /app/src/
+COPY projeto/pom.xml /app/
+COPY projeto/src/ /app/src/
+
 
 
 # Compilar o projeto
