@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulário de Tarefa</title>
+</head>
+<body>
+<h1 th:text="${task.id == null ? 'Criar Nova Tarefa' : 'Editar Tarefa'}"></h1>
+<form th:action="@{/tasks}" th:object="${task}" method="post">
+    <div>
+        <label for="title">Título:</label>
+        <input type="text" id="title" th:field="*{title}" required />
+    </div>
+    <div>
+        <label for="description">Descrição:</label>
+        <textarea id="description" th:field="*{description}" required></textarea>
+    </div>
+    <div>
+        <label for="deadLine">Data Limite:</label>
+        <input type="date" id="deadLine" th:field="*{deadLine}" required />
+    </div>
+    <div>
+        <button type="submit">Salvar</button>
+    </div>
+</form>
+</body>
+</html>
