@@ -1,33 +1,30 @@
-#Etapa de construção
-FROM maven:3.4.0-openjdk-21 AS build
-#FROM ubuntu:latest AS build
+# Etapa de construção
+FROM maven:3.9.6-openjdk-21 AS build
 
-RUN api-get update && apt-get-install -y maven apt-get clean && rm -rf/var/lib/apt/lists/*
+# Atualizar pacotes e instalar dependências (caso necessário)
+RUN apt-get update && apt-get install -y maven && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-#Definir o diretorio dentro do container para a aplicação
+# Definir o diretório de trabalho dentro do container
 WORKDIR /app
 
-#Copiar o pom.xml para o container
+# Copiar os arquivos do projeto
 COPY pom.xml .
-COPY src ./src 
+COPY src/ ./src/
 
-#Executar o Maven para compilar projeto e gerar o jar file
+# Executar o Maven para compilar o projeto e gerar o JAR
 RUN mvn clean package -DskipTests
 
-#Etapa de execução
+# Etapa de execução
 FROM openjdk:21-slim
 
-#Definir o diretorio de trabalho para a aplicação
+# Definir o diretório de trabalho para a aplicação
 WORKDIR /app
 
-#Copiar o JAR construido na etapa anterior
-COPY  --from=build /app/target/*.jar app.jar
+# Copiar o JAR construído na etapa anterior
+COPY --from=build /app/target/*.jar app.jar
 
-#Definir a Porta que será utilizada na aplicação
+# Definir a porta que será exposta pelo container
 EXPOSE 8080
 
-#Comando para executar a aplicação
-ENTRYPOINT [ "java", "-jar", app.jar]
-
-
-
+# Comando para executar a aplicação
+ENTRYPOINT ["java", "-jar", "app.jar"]
