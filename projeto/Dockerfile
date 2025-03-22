@@ -5,8 +5,9 @@ FROM maven:3.9.6-eclipse-temurin-21 AS build
 WORKDIR /app
 
 # Copiar os arquivos do projeto
-COPY pom.xml .
-COPY src/ ./src/
+COPY ./pom.xml /app/
+COPY ./src /app/src/
+
 
 # Compilar o projeto
 RUN mvn clean package -DskipTests
